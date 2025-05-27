@@ -5,12 +5,13 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    client
-      .fetch(`*[_type == "project"]{_id,
-    title,
-    description,
-    link,
-    images[]{asset->{url}}`)
+    client.fetch(`*[_type == "project"]{
+  _id,
+  title,
+  description,
+  link,
+  images[]{asset->{url}}
+}`)
       .then((data) => setProjects(data))
       .catch(console.error);
   }, []);
