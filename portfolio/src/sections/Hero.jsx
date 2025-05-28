@@ -35,43 +35,38 @@ const Hero = () => {
       <img
         src="/assets/hero/map.png"
         alt="Folder"
-        className="absolute top-25 left-1/2 -translate-x-1/2 w-[60%] z-0"
+        className="absolute top-30 left-1/2 -translate-x-1/2 w-[60%] z-0"
       />
 
-      {/* Белый лист с тенью */}
-      <img
-        src="public/assets/hero/Letter_US.png"
-        alt="Paper"
-        className="absolute top-50 left-1/2 -translate-x-1/2 w-[1200px] z-10"
-      />
+      
       {/* === Контейнер с бумагой в папке === */}
       <div className="relative mx-auto mt-50 w-[1200px] sm:w-[800px] md:w-[1000px] max-w-full">
         {/* Welcome стикер */}
         <img
           src="/assets/hero/welcome.png"
           alt="Welcome"
-          className="absolute top-[30px] left-[50px] w-[350px] rotate-[-3deg] z-20"
+          className="absolute top-[60px] left-[20px] w-[300px] rotate-[-3deg] z-20"
         />
 
         {/* Надпись PORTFOLIO */}
         <img
           src="/assets/hero/portfolio_title.png"
           alt="PORTFOLIO"
-          className="absolute left-1/2 -translate-x-1/2 top-[140px] w-[90%] z-30"
+          className="absolute left-1/2 -translate-x-1/2 top-[50px] w-[100%] z-10"
         />
 
         {/* Стикер Name */}
         <img
           src="/assets/hero/name_sticker.png"
           alt="Name"
-          className="absolute top-[700px] left-[0px] w-[350px] rotate-[358deg] z-20"
+          className="absolute top-[600px] left-[10px] w-[350px] rotate-[358deg] z-20"
         />
 
         {/* Стикер Position */}
         <img
           src="/assets/hero/position_sticker.png"
           alt="Position"
-          className="absolute top-[650px] right-[0px] w-[350px] rotate-[2deg] z-20"
+          className="absolute top-[580px] right-[20px] w-[350px] z-20"
         />
       </div>
 
@@ -79,7 +74,7 @@ const Hero = () => {
       <img
         src="/assets/hero/uidesigner_lenta.png"
         alt="Tape"
-        className="absolute bottom-0 right-0 w-32"
+        className="absolute bottom-0 right-0 w-300"
       />
     </section>
   );
