@@ -6,7 +6,7 @@ const About = () => {
       id="about"
       className="relative w-full min-h-screen bg-[#f4efe8] flex justify-center items-center overflow-hidden"
     >
-      {/* 📓 Блокнот */}
+      {/* 📓 Блокнот */} 
       <img
         src="/images/aboutme/blocknote.png"
         alt="Notebook"
