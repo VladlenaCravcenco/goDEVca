@@ -2,19 +2,11 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-screen bg-white overflow-hidden">
-      {/* Белый фон (стол) */}
-      <div className="absolute inset-0 bg-white z-0" />
-
+    <section className="relative w-full min-h-screen bg-white overflow-visible">
       {/* Шапка */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-[1200px] px-4">
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-[1440px] px-4 z-10">
         <div className="relative flex items-center justify-between px-6 py-4 rounded-full bg-gradient-to-b from-white to-[#f2f2f2] border border-[#e6e6e6] shadow-[inset_0_4px_10px_rgba(0,0,0,0.3)]">
-          {/* Ручка */}
-          <img
-            src="/assets/hero/Pen.png"
-            alt="Pen"
-            className="h-22 object-contain"
-          />
+          
           {/* Кнопки */}
           <div className="flex gap-4">
             <img
@@ -33,48 +25,9 @@ const Hero = () => {
 
       {/* Папка позади */}
       <img
-        src="/assets/hero/map.png"
+        src="/assets/hero/1screen.png"
         alt="Folder"
-        className="absolute top-30 left-1/2 -translate-x-1/2 w-[60%] z-0"
-      />
-
-      
-      {/* === Контейнер с бумагой в папке === */}
-      <div className="relative mx-auto mt-50 w-[1200px] sm:w-[800px] md:w-[1000px] max-w-full">
-        {/* Welcome стикер */}
-        <img
-          src="/assets/hero/welcome.png"
-          alt="Welcome"
-          className="absolute top-[60px] left-[20px] w-[300px] rotate-[-3deg] z-20"
-        />
-
-        {/* Надпись PORTFOLIO */}
-        <img
-          src="/assets/hero/portfolio_title.png"
-          alt="PORTFOLIO"
-          className="absolute left-1/2 -translate-x-1/2 top-[50px] w-[100%] z-10"
-        />
-
-        {/* Стикер Name */}
-        <img
-          src="/assets/hero/name_sticker.png"
-          alt="Name"
-          className="absolute top-[600px] left-[10px] w-[350px] rotate-[358deg] z-20"
-        />
-
-        {/* Стикер Position */}
-        <img
-          src="/assets/hero/position_sticker.png"
-          alt="Position"
-          className="absolute top-[580px] right-[20px] w-[350px] z-20"
-        />
-      </div>
-
-      {/* Бумажка, скрепка, лента и т.д. */}
-      <img
-        src="/assets/hero/uidesigner_lenta.png"
-        alt="Tape"
-        className="absolute bottom-0 right-0 w-300"
+        className="absolute top-28 left-1/2 -translate-x-1/2 w-[95%] max-w-[1200px] z-10 overflow-visible"
       />
     </section>
   );
