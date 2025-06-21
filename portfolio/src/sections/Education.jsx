@@ -2,7 +2,7 @@ import React from 'react';
 
 const Education = () => {
   return (
-    <section className="relative w-full  bg-white overflow-visible">
+    <section className="relative w-full  bg-transparent overflow-visible">
       {/* Карта обучения */}
       <img
         src="/assets/hero/3screen.png"

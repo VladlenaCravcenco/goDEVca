@@ -57,7 +57,7 @@ html, body{
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  background-color: var(--color-white-100);
+  background-color: transparent;
   color: var(--color-black-300);
 }
 

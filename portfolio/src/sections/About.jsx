@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="relative w-full min-h-[900px] -mt-[120px] bg-white overflow-visible z-10"
+      className="relative w-full min-h-[900px] -mt-[120px] bg-transparent overflow-visible z-10"
     >
       <div className="relative w-full max-w-[1200px] mx-auto">
         <img

@@ -17,7 +17,7 @@ export default function Projects() {
   }, []);
 
   return (
-  <section className="p-6 bg-white text-black">
+  <section className="p-6 bg-transparent text-black">
     <h2 className="text-3xl font-bold mb-6">Проекты</h2>
     <div className="space-y-4">
       {projects.map((project) => (
