@@ -5,7 +5,7 @@ const Hero = () => {
     <section className="relative w-full min-h-screen overflow-visible">
       {/* Бумага с заголовком */}
       <img
-        src="/assets/hero/1screen.png"
+        src="/assets/hero/4screen.png"
         alt="Hero composition"
         className="
          absolute
@@ -13,7 +13,7 @@ const Hero = () => {
           left-1/2
           -translate-x-[60%]
           w-[130vw]
-          max-w-[1800px]
+          max-w-[3000px]
           md:w-[110vw]
           sm:w-[100vw]
           sm:-translate-x-[55%]
