@@ -1,29 +1,51 @@
-import React from "react";
+import { motion } from "framer-motion";
+import "/src/Hero.css";
 
-const Hero = () => {
+export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen overflow-visible">
-      {/* Бумага с заголовком */}
-      <img
-        src="/assets/hero/4screen.png"
-        alt="Hero composition"
-        className="
-         absolute
-          top-0
-          left-1/2
-          -translate-x-[60%]
-          w-[130vw]
-          max-w-[3000px]
-          md:w-[110vw]
-          sm:w-[100vw]
-          sm:-translate-x-[55%]
-          z-10
-          transition-all
-          duration-500
-        "
-      />
+    <section className="hero">
+      <div className="heroCenter">
+        <motion.h1
+          className="heroTitle"
+          initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          Design <span className="heroTitleMuted">Portfolio</span>
+        </motion.h1>
+
+        <motion.p
+          className="heroSubtitle"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          Scroll to open folders
+        </motion.p>
+      </div>
+
+      <motion.div
+        className="heroScroll"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <div className="scrollCapsule">
+          <motion.div
+            className="scrollDot"
+            animate={{ y: [0, 16, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+
+        <motion.div
+          className="scrollArrow"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          ↓
+        </motion.div>
+      </motion.div>
     </section>
   );
-};
-
-export default Hero;
+}

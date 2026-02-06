@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./sections/Header";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
-import Education from "./sections/Education";
+
 import Projects from "./sections/Projects";
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
         <Header isDark={isDark} setIsDark={setIsDark} />
         <Hero />
         <About />
-        <Education />
         <Projects />
       </main>
     </div>

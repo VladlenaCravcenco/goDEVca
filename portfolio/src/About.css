@@ -1,0 +1,86 @@
+.aboutSection {
+  padding: 40px 0;
+}
+
+.aboutWrap {
+  width: 90vw;
+  height: 150px;          /* как ты хочешь */
+  margin: 0 auto;
+  border-radius: 9999px;  /* полностью закруглённые */
+  overflow: hidden;
+  position: relative;
+}
+
+/* фон-картинка */
+.aboutBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+/* затемнение/градиент сверху */
+.aboutOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(3, 0, 41, 0.45) 0%,
+    rgba(3, 0, 41, 0.15) 45%,
+    rgba(3, 0, 41, 0.35) 100%
+  );
+}
+
+/* контент */
+.aboutContent {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.aboutText {
+  max-width: 560px;
+  color: #fff;
+}
+
+.aboutKicker {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.aboutTitle {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.aboutDesc {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* адаптив */
+@media (min-width: 768px) {
+  
+
+  .aboutContent {
+    padding: 48px;
+  }
+
+  .aboutTitle {
+    font-size: 38px;
+  }
+
+  .aboutDesc {
+    font-size: 16px;
+  }
+}

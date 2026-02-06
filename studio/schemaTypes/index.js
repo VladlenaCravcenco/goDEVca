@@ -5,5 +5,7 @@ import author from './author'
 import project from './project';
 import digitalProduct from './digitalProduct';
 import siteDoc from './siteDoc';
+import folder from "./folder";
+import work from "./work";
 
-export const schemaTypes = [post, author, category, blockContent, project, digitalProduct, siteDoc]
+export const schemaTypes = [post, author, category, blockContent, project, digitalProduct, siteDoc, folder, work]

@@ -1,0 +1,78 @@
+.hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroCenter {
+  text-align: center;
+  padding: 0 24px;
+}
+
+.heroTitle {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  font-size: 52px;
+  margin: 0;
+}
+
+.heroTitleMuted {
+  opacity: 0.7;
+}
+
+/* адаптив без tailwind */
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 88px;
+  }
+}
+
+.heroSubtitle {
+  margin-top: 16px;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .heroSubtitle {
+    font-size: 18px;
+  }
+}
+
+.heroScroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.scrollCapsule {
+  width: 32px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.scrollDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.scrollArrow {
+  font-size: 14px;
+  opacity: 0.6;
+}
