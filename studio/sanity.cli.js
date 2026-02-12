@@ -1,13 +1,11 @@
 import {defineCliConfig} from 'sanity/cli'
 
-export default defineCliConfig({
-  api: {
-    projectId: '4yokwa9c',
-    dataset: 'production'
-  },
-  /**
-   * Enable auto-updates for studios.
-   * Learn more at https://www.sanity.io/docs/cli#auto-updates
-   */
-  autoUpdates: true,
+export default defineConfig({
+  name: 'default',
+  title: 'studio',
+  projectId: '4yokwa9c',
+  dataset: 'production',
+  basePath: '/', // <-- добавь
+  plugins: [structureTool(), visionTool()],
+  schema: { types: schemaTypes },
 })
