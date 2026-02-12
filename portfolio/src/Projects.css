@@ -167,7 +167,7 @@
 /* Мобилка */
 @media (max-width: 700px){
   .dp-grid{
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 16px;
   }
 }
