@@ -1,6 +1,6 @@
 // src/components/ToggleSwitch.jsx
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const ToggleSwitch = ({ onToggle, isDark }) => {
   return (
