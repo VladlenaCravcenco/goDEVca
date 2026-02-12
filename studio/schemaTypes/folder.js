@@ -1,81 +1,48 @@
 export default {
-  name: 'folder',
-  title: 'Folder',
-  type: 'document',
+  name: "folder",
+  title: "Folder (Tabs)",
+  type: "document",
   fields: [
-    { name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() },
-
     {
-      name: 'year',
-      title: 'Year',
-      type: 'number',
-      validation: (Rule) => Rule.required().min(2000).max(2100),
+      name: "title",
+      title: "Tab title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      description: "То, что увидишь в табах: Graphic design / Ads / 3d motion",
     },
 
     {
-      name: 'color',
-      title: 'Folder color',
-      type: 'string',
+      name: "tabKey",
+      title: "Tab key (fixed)",
+      type: "string",
+      validation: (Rule) => Rule.required(),
       options: {
         list: [
-          { title: 'Green', value: '#B9C6A6' },
-          { title: 'Olive', value: '#A9B894' },
-          { title: 'Gray', value: '#C9C9C9' },
-          { title: 'Orange', value: '#FF5C00' },
+          { title: "Graphic design", value: "graphic" },
+          { title: "Ads", value: "ads" },
+          { title: "3d motion", value: "motion3d" },
         ],
-        layout: 'radio',
+        layout: "radio",
       },
-      initialValue: '#B9C6A6',
+      description:
+        "Стабильный ключ. Чтобы фронт мог фильтровать без зависимости от текста.",
     },
 
     {
-      name: 'stickerText',
-      title: 'Sticker text',
-      type: 'string',
-      description: 'Надпись как наклейка на папке (например: Fitness One)',
-    },
-
-    {
-      name: 'stickerStyle',
-      title: 'Sticker style',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Clean', value: 'clean' },
-          { title: 'Handwritten', value: 'hand' },
-          { title: 'Label', value: 'label' },
-        ],
-      },
-      initialValue: 'label',
-    },
-
-    {
-      name: 'cover',
-      title: 'Cover image (optional)',
-      type: 'image',
-      options: { hotspot: true },
-    },
-
-    {
-      name: 'sortOrder',
-      title: 'Sort order',
-      type: 'number',
-      description: 'Чем меньше — тем выше в списке',
+      name: "sortOrder",
+      title: "Sort order",
+      type: "number",
       initialValue: 0,
+      description: "Чем меньше — тем левее/выше в табах",
     },
   ],
 
   preview: {
-    select: {
-      title: 'title',
-      subtitle: 'year',
-      media: 'cover',
-    },
-    prepare({ title, subtitle, media }) {
+    select: { title: "title", tabKey: "tabKey" },
+    prepare({ title, tabKey }) {
       return {
         title,
-        subtitle: subtitle ? `Year: ${subtitle}` : '',
-        media,
+        subtitle: tabKey ? `key: ${tabKey}` : "",
       };
     },
   },
