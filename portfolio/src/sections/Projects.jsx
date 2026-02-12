@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { client } from "../sanityClient";
-import "./Projects.css";
+import "../Projects.css";
 
 const MotionArticle = motion.article;
 
