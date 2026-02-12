@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { client } from "./sanityClient";
 import "./Projects.css";
 
+const MotionArticle = motion.article;
+
 export default function ProjectsPage() {
   const [works, setWorks] = useState([]);
   const [activeTag, setActiveTag] = useState("All");
@@ -66,7 +68,7 @@ export default function ProjectsPage() {
       <div className="dp-list">
         <AnimatePresence mode="popLayout">
           {filteredWorks.map((work, idx) => (
-            <motion.article
+            <MotionArticle
               key={work._id}
               className="dp-project"
               initial={{ opacity: 0, y: 16 }}
@@ -76,7 +78,7 @@ export default function ProjectsPage() {
             >
               <ProjectHeader work={work} index={idx} />
               <MediaGrid items={work.media || []} />
-            </motion.article>
+            </MotionArticle>
           ))}
         </AnimatePresence>
 
@@ -92,20 +94,14 @@ function ProjectHeader({ work, index }) {
   return (
     <header className="dp-header">
       <div className="dp-left">
-        {(work.tags?.[0] || "Project") && (
-          <span className="dp-miniTag">{work.tags?.[0] || "Project"}</span>
-        )}
+        <span className="dp-miniTag">{work.tags?.[0] || "Project"}</span>
 
         <h2 className="dp-title">
           {work.title || `Название проекта #${index + 1}`}
-          <span className="dp-titleMeta">
-            {work.year ? `/${work.year}` : "/—"}
-          </span>
+          <span className="dp-titleMeta">{work.year ? `/${work.year}` : "/—"}</span>
         </h2>
 
-        {work.shortDescription ? (
-          <p className="dp-desc">{work.shortDescription}</p>
-        ) : null}
+        {work.shortDescription ? <p className="dp-desc">{work.shortDescription}</p> : null}
       </div>
 
       <div className="dp-right">
@@ -124,9 +120,7 @@ function ProjectHeader({ work, index }) {
               {work?.collab?.label ? (
                 <strong className="dp-collabTitle">{work.collab.label}</strong>
               ) : null}
-              {work?.collab?.text ? (
-                <p className="dp-collabSub">{work.collab.text}</p>
-              ) : null}
+              {work?.collab?.text ? <p className="dp-collabSub">{work.collab.text}</p> : null}
             </div>
           </div>
         ) : null}
@@ -135,19 +129,13 @@ function ProjectHeader({ work, index }) {
   );
 }
 
-/**
- * Сетка:
- * - если в Sanity задан layout(colSpan/rowSpan) — будет красиво как в макете
- * - если нет — авто 4:3 карточки одинаковые
- * - media: image/video
- */
 function MediaGrid({ items }) {
   const safeItems = Array.isArray(items) ? items : [];
 
   return (
     <div className="dp-grid">
       {safeItems.map((m) => {
-        const colSpan = m?.layout?.colSpan || 4; // дефолт: 3 карточки в ряд на 12-колонках
+        const colSpan = m?.layout?.colSpan || 4;
         const rowSpan = m?.layout?.rowSpan || 3;
 
         return (
@@ -169,12 +157,7 @@ function MediaGrid({ items }) {
                 preload="metadata"
               />
             ) : (
-              <img
-                className="dp-media"
-                src={m.imageUrl}
-                alt={m.alt || ""}
-                loading="lazy"
-              />
+              <img className="dp-media" src={m.imageUrl} alt={m.alt || ""} loading="lazy" />
             )}
           </figure>
         );
