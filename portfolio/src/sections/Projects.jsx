@@ -11,29 +11,34 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     client
-      .fetch(`*[_type == "work"] | order(year desc, _createdAt desc) {
-        _id,
-        title,
-        year,
-        shortDescription,
-        tags,
-
-        collab {
-          label,
-          text,
-          "companyLogoUrl": companyLogo.asset->url
-        },
-
-        media[]{
-          _key,
-          type,
-          alt,
-          layout { colSpan, rowSpan },
-          "imageUrl": image.asset->url,
-          "videoUrl": video.asset->url,
-          "posterUrl": poster.asset->url
-        }
-      }`)
+      .fetch(
+        `*[_type == "folder"] | order(sortOrder asc) {
+  _id,
+  tabKey,
+  title,
+  "works": *[_type == "work" && references(^._id)] | order(sortOrder asc, _createdAt desc) {
+    _id,
+    title,
+    year,
+    shortDescription,
+    badge,
+    collab {
+      label,
+      text,
+      "companyLogoUrl": companyLogo.asset->url
+    },
+    media[]{
+      _key,
+      type,
+      alt,
+      layout { colSpan, rowSpan },
+      "imageUrl": image.asset->url,
+      "videoUrl": video.asset->url,
+      "posterUrl": poster.asset->url
+    }
+  }
+}`,
+      )
       .then((res) => setWorks(res || []));
   }, []);
 
@@ -98,10 +103,14 @@ function ProjectHeader({ work, index }) {
 
         <h2 className="dp-title">
           {work.title || `Название проекта #${index + 1}`}
-          <span className="dp-titleMeta">{work.year ? `/${work.year}` : "/—"}</span>
+          <span className="dp-titleMeta">
+            {work.year ? `/${work.year}` : "/—"}
+          </span>
         </h2>
 
-        {work.shortDescription ? <p className="dp-desc">{work.shortDescription}</p> : null}
+        {work.shortDescription ? (
+          <p className="dp-desc">{work.shortDescription}</p>
+        ) : null}
       </div>
 
       <div className="dp-right">
@@ -120,7 +129,9 @@ function ProjectHeader({ work, index }) {
               {work?.collab?.label ? (
                 <strong className="dp-collabTitle">{work.collab.label}</strong>
               ) : null}
-              {work?.collab?.text ? <p className="dp-collabSub">{work.collab.text}</p> : null}
+              {work?.collab?.text ? (
+                <p className="dp-collabSub">{work.collab.text}</p>
+              ) : null}
             </div>
           </div>
         ) : null}
@@ -157,7 +168,12 @@ function MediaGrid({ items }) {
                 preload="metadata"
               />
             ) : (
-              <img className="dp-media" src={m.imageUrl} alt={m.alt || ""} loading="lazy" />
+              <img
+                className="dp-media"
+                src={m.imageUrl}
+                alt={m.alt || ""}
+                loading="lazy"
+              />
             )}
           </figure>
         );
