@@ -1,16 +1,19 @@
 // src/components/ToggleSwitch.jsx
 import React from "react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+const MotionButton = motion.button;
+const MotionImg = motion.img;
 
 const ToggleSwitch = ({ onToggle, isDark }) => {
   return (
-    <motion.button
+    <MotionButton
       onClick={() => onToggle(!isDark)}
       className="w-12 h-12 rounded-full bg-transparent shadow-md flex items-center justify-center border border-gray-300 hover:scale-105 transition"
       whileTap={{ scale: 0.95 }}
     >
       <AnimatePresence mode="wait">
-        <motion.img
+        <MotionImg
           key={isDark ? "moon" : "sun"}
           src={isDark ? "/assets/hero/moon.svg" : "/assets/hero/sun.svg"}
           alt="theme icon"
@@ -21,7 +24,7 @@ const ToggleSwitch = ({ onToggle, isDark }) => {
           className="w-6 h-6"
         />
       </AnimatePresence>
-    </motion.button>
+    </MotionButton>
   );
 };
 
