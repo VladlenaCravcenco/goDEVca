@@ -1,270 +1,184 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { client } from "../sanityClient";
-import "/src/Projects.css";
+import { client } from "./sanityClient";
+import "./Projects.css";
 
-/** чтобы ESLint не ругался на motion */
-const MotionArticle = motion.article;
-const MotionDiv = motion.div;
-const MotionButton = motion.button;
-
-export default function Projects() {
-  const [folders, setFolders] = useState([]);
-  const [activeFolderId, setActiveFolderId] = useState(null);
-  const [activeWorkIndex, setActiveWorkIndex] = useState(0);
-
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+export default function ProjectsPage() {
+  const [works, setWorks] = useState([]);
+  const [activeTag, setActiveTag] = useState("All");
 
   useEffect(() => {
     client
-      .fetch(
-        `*[_type == "folder"] | order(year desc, sortOrder asc) {
-        _id, title, year, color, stickerText,
-        "works": *[_type == "work" && references(^._id)] | order(sortOrder asc, _createdAt desc) {
-          _id,
-          title,
-          caption,
-          description,
-          collabLabel,
-          "companyLogoUrl": companyLogo.asset->url,
-          "coverImageUrl": image.asset->url,
-          media[]{
-            _key,
-            type,
-            alt,
-            "imageUrl": image.asset->url,
-            "videoUrl": video.asset->url,
-            "posterUrl": poster.asset->url
-          }
+      .fetch(`*[_type == "work"] | order(year desc, _createdAt desc) {
+        _id,
+        title,
+        year,
+        shortDescription,
+        tags,
+
+        collab {
+          label,
+          text,
+          "companyLogoUrl": companyLogo.asset->url
+        },
+
+        media[]{
+          _key,
+          type,
+          alt,
+          layout { colSpan, rowSpan },
+          "imageUrl": image.asset->url,
+          "videoUrl": video.asset->url,
+          "posterUrl": poster.asset->url
         }
-      }`,
-      )
-      .then((res) => {
-        console.log("folders from sanity:", res);
-        setFolders(res || []);
-        if (res?.[0]?._id) setActiveFolderId(res[0]._id);
-        setActiveWorkIndex(0);
-      });
+      }`)
+      .then((res) => setWorks(res || []));
   }, []);
 
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      ([e]) => setIsVisible(e.isIntersecting),
-      { threshold: 0.3 },
-    );
-    if (sectionRef.current) io.observe(sectionRef.current);
-    return () => io.disconnect();
-  }, []);
+  const allTags = useMemo(() => {
+    const set = new Set();
+    works.forEach((w) => (w.tags || []).forEach((t) => set.add(t)));
+    return ["All", ...Array.from(set)];
+  }, [works]);
 
-  const activeFolder = useMemo(
-    () => folders.find((f) => f._id === activeFolderId) || null,
-    [folders, activeFolderId],
-  );
-
-  const works = activeFolder?.works || [];
-  const activeWork = works[activeWorkIndex] || null;
-
-  const canPrev = activeWorkIndex > 0;
-  const canNext = activeWorkIndex < works.length - 1;
-
-  function openFolder(folderId) {
-    setActiveFolderId(folderId);
-    setActiveWorkIndex(0);
-  }
-
-  function prevWork() {
-    if (!canPrev) return;
-    setActiveWorkIndex((i) => i - 1);
-  }
-
-  function nextWork() {
-    if (!canNext) return;
-    setActiveWorkIndex((i) => i + 1);
-  }
+  const filteredWorks = useMemo(() => {
+    if (activeTag === "All") return works;
+    return works.filter((w) => (w.tags || []).includes(activeTag));
+  }, [works, activeTag]);
 
   return (
-    <section ref={sectionRef} className="projects">
-      <div className="projects-top">
-        <h2 className="projects-title">Design projects</h2>
-
-        <div className="folders-row">
-          {folders.map((folder, i) => (
-            <FolderPill
-              key={folder._id}
-              folder={folder}
-              active={folder._id === activeFolderId}
-              bounce={!isVisible && !activeFolderId}
-              delay={i * 0.06}
-              onClick={() => openFolder(folder._id)}
-            />
+    <section className="dp-page">
+      <div className="dp-top">
+        <div className="dp-filters">
+          {allTags.map((t) => (
+            <button
+              key={t}
+              className={`dp-pill ${activeTag === t ? "is-active" : ""}`}
+              onClick={() => setActiveTag(t)}
+              type="button"
+            >
+              {t}
+            </button>
           ))}
         </div>
       </div>
 
-      <div className="project-stage">
-        <div className="project-nav">
-          <button className="nav-btn" onClick={prevWork} disabled={!canPrev}>
-            ← Предыдущий
-          </button>
-
-          <div className="nav-meta">
-            {activeFolder ? (
-              <span className="nav-folder">
-                {activeFolder.title}
-                {activeFolder.year ? ` · ${activeFolder.year}` : ""}
-              </span>
-            ) : null}
-            {works.length ? (
-              <span className="nav-count">
-                {activeWorkIndex + 1} / {works.length}
-              </span>
-            ) : null}
-          </div>
-
-          <button className="nav-btn" onClick={nextWork} disabled={!canNext}>
-            Следующий →
-          </button>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {activeWork ? (
-            <MotionArticle
-              key={activeWork._id}
-              className="project"
-              initial={{ opacity: 0, y: 18 }}
+      <div className="dp-list">
+        <AnimatePresence mode="popLayout">
+          {filteredWorks.map((work, idx) => (
+            <motion.article
+              key={work._id}
+              className="dp-project"
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -18 }}
-              transition={{ duration: 0.25 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.25, delay: Math.min(idx * 0.03, 0.2) }}
             >
-              <div className="project-head">
-                <div className="project-head__left">
-                  <h1 className="project-title">
-                    {activeWork.title || "Untitled project"}
-                  </h1>
-
-                  {activeWork.collabLabel ? (
-                    <span className="project-collab">
-                      {activeWork.collabLabel}
-                    </span>
-                  ) : null}
-                </div>
-
-                <div className="project-head__right">
-                  {activeWork.companyLogoUrl ? (
-                    <img
-                      className="project-logo"
-                      src={activeWork.companyLogoUrl}
-                      alt="Company logo"
-                      loading="lazy"
-                    />
-                  ) : null}
-                </div>
-              </div>
-
-              {(activeWork.description || activeWork.caption) && (
-                <p className="project-desc">
-                  {activeWork.description || activeWork.caption}
-                </p>
-              )}
-
-              <MediaMasonry work={activeWork} />
-            </MotionArticle>
-          ) : (
-            <MotionDiv
-              key="empty"
-              className="project-empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              Пока нет проектов в этой категории.
-            </MotionDiv>
-          )}
+              <ProjectHeader work={work} index={idx} />
+              <MediaGrid items={work.media || []} />
+            </motion.article>
+          ))}
         </AnimatePresence>
+
+        {!filteredWorks.length && (
+          <div className="dp-empty">Пока нет проектов в этой категории.</div>
+        )}
       </div>
     </section>
   );
 }
 
-function FolderPill({ folder, active, onClick, bounce, delay }) {
+function ProjectHeader({ work, index }) {
   return (
-    <MotionButton
-      className={`folder-pill ${active ? "is-active" : ""}`}
-      onClick={onClick}
-      animate={bounce ? { y: [0, -6, 0] } : { y: 0 }}
-      transition={
-        bounce ? { duration: 1.2, repeat: Infinity, delay } : { duration: 0.15 }
-      }
-      style={
-        active ? { background: folder.color || "#111", color: "#fff" } : {}
-      }
-    >
-      <strong>{folder.stickerText || folder.title}</strong>
-      {folder.year ? <span className="pill-year">{folder.year}</span> : null}
-    </MotionButton>
+    <header className="dp-header">
+      <div className="dp-left">
+        {(work.tags?.[0] || "Project") && (
+          <span className="dp-miniTag">{work.tags?.[0] || "Project"}</span>
+        )}
+
+        <h2 className="dp-title">
+          {work.title || `Название проекта #${index + 1}`}
+          <span className="dp-titleMeta">
+            {work.year ? `/${work.year}` : "/—"}
+          </span>
+        </h2>
+
+        {work.shortDescription ? (
+          <p className="dp-desc">{work.shortDescription}</p>
+        ) : null}
+      </div>
+
+      <div className="dp-right">
+        {work?.collab?.label || work?.collab?.text ? (
+          <div className="dp-collab">
+            {work?.collab?.companyLogoUrl ? (
+              <img
+                className="dp-collabLogo"
+                src={work.collab.companyLogoUrl}
+                alt={work.collab.label || "Company logo"}
+                loading="lazy"
+              />
+            ) : null}
+
+            <div className="dp-collabText">
+              {work?.collab?.label ? (
+                <strong className="dp-collabTitle">{work.collab.label}</strong>
+              ) : null}
+              {work?.collab?.text ? (
+                <p className="dp-collabSub">{work.collab.text}</p>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </header>
   );
 }
 
-function MediaMasonry({ work }) {
-  const hasMediaArray = Array.isArray(work.media) && work.media.length > 0;
-
-  const items = hasMediaArray
-    ? work.media
-        .map((m) => {
-          if (m?.videoUrl) {
-            return {
-              key: m._key,
-              kind: "video",
-              src: m.videoUrl,
-              poster: m.posterUrl,
-            };
-          }
-          if (m?.imageUrl) {
-            return {
-              key: m._key,
-              kind: "image",
-              src: m.imageUrl,
-              alt: m.alt || work.title || "",
-            };
-          }
-          return null;
-        })
-        .filter(Boolean)
-    : work.coverImageUrl
-      ? [
-          {
-            key: "cover",
-            kind: "image",
-            src: work.coverImageUrl,
-            alt: work.title || "",
-          },
-        ]
-      : [];
+/**
+ * Сетка:
+ * - если в Sanity задан layout(colSpan/rowSpan) — будет красиво как в макете
+ * - если нет — авто 4:3 карточки одинаковые
+ * - media: image/video
+ */
+function MediaGrid({ items }) {
+  const safeItems = Array.isArray(items) ? items : [];
 
   return (
-    <div className="masonry">
-      {items.map((it) => (
-        <figure key={it.key} className="masonry-item">
-          {it.kind === "image" ? (
-            <img
-              className="masonry-media"
-              src={it.src}
-              alt={it.alt || ""}
-              loading="lazy"
-            />
-          ) : (
-            <video
-              className="masonry-media"
-              src={it.src}
-              poster={it.poster}
-              controls
-              playsInline
-              preload="metadata"
-            />
-          )}
-        </figure>
-      ))}
+    <div className="dp-grid">
+      {safeItems.map((m) => {
+        const colSpan = m?.layout?.colSpan || 4; // дефолт: 3 карточки в ряд на 12-колонках
+        const rowSpan = m?.layout?.rowSpan || 3;
+
+        return (
+          <figure
+            key={m._key}
+            className="dp-cell"
+            style={{
+              gridColumn: `span ${Math.max(2, Math.min(12, colSpan))}`,
+              gridRow: `span ${Math.max(2, Math.min(12, rowSpan))}`,
+            }}
+          >
+            {m.type === "video" && m.videoUrl ? (
+              <video
+                className="dp-media"
+                src={m.videoUrl}
+                poster={m.posterUrl}
+                controls
+                playsInline
+                preload="metadata"
+              />
+            ) : (
+              <img
+                className="dp-media"
+                src={m.imageUrl}
+                alt={m.alt || ""}
+                loading="lazy"
+              />
+            )}
+          </figure>
+        );
+      })}
     </div>
   );
 }
