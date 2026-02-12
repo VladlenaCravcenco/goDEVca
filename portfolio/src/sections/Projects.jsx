@@ -18,7 +18,8 @@ export default function Projects() {
 
   useEffect(() => {
     client
-      .fetch(`*[_type == "folder"] | order(year desc, sortOrder asc) {
+      .fetch(
+        `*[_type == "folder"] | order(year desc, sortOrder asc) {
         _id, title, year, color, stickerText,
         "works": *[_type == "work" && references(^._id)] | order(sortOrder asc, _createdAt desc) {
           _id,
@@ -37,8 +38,10 @@ export default function Projects() {
             "posterUrl": poster.asset->url
           }
         }
-      }`)
+      }`,
+      )
       .then((res) => {
+        console.log("folders from sanity:", res);
         setFolders(res || []);
         if (res?.[0]?._id) setActiveFolderId(res[0]._id);
         setActiveWorkIndex(0);
@@ -46,14 +49,17 @@ export default function Projects() {
   }, []);
 
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setIsVisible(e.isIntersecting), { threshold: 0.3 });
+    const io = new IntersectionObserver(
+      ([e]) => setIsVisible(e.isIntersecting),
+      { threshold: 0.3 },
+    );
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();
   }, []);
 
   const activeFolder = useMemo(
     () => folders.find((f) => f._id === activeFolderId) || null,
-    [folders, activeFolderId]
+    [folders, activeFolderId],
   );
 
   const works = activeFolder?.works || [];
@@ -109,7 +115,11 @@ export default function Projects() {
                 {activeFolder.year ? ` · ${activeFolder.year}` : ""}
               </span>
             ) : null}
-            {works.length ? <span className="nav-count">{activeWorkIndex + 1} / {works.length}</span> : null}
+            {works.length ? (
+              <span className="nav-count">
+                {activeWorkIndex + 1} / {works.length}
+              </span>
+            ) : null}
           </div>
 
           <button className="nav-btn" onClick={nextWork} disabled={!canNext}>
@@ -129,10 +139,14 @@ export default function Projects() {
             >
               <div className="project-head">
                 <div className="project-head__left">
-                  <h1 className="project-title">{activeWork.title || "Untitled project"}</h1>
+                  <h1 className="project-title">
+                    {activeWork.title || "Untitled project"}
+                  </h1>
 
                   {activeWork.collabLabel ? (
-                    <span className="project-collab">{activeWork.collabLabel}</span>
+                    <span className="project-collab">
+                      {activeWork.collabLabel}
+                    </span>
                   ) : null}
                 </div>
 
@@ -149,7 +163,9 @@ export default function Projects() {
               </div>
 
               {(activeWork.description || activeWork.caption) && (
-                <p className="project-desc">{activeWork.description || activeWork.caption}</p>
+                <p className="project-desc">
+                  {activeWork.description || activeWork.caption}
+                </p>
               )}
 
               <MediaMasonry work={activeWork} />
@@ -177,8 +193,12 @@ function FolderPill({ folder, active, onClick, bounce, delay }) {
       className={`folder-pill ${active ? "is-active" : ""}`}
       onClick={onClick}
       animate={bounce ? { y: [0, -6, 0] } : { y: 0 }}
-      transition={bounce ? { duration: 1.2, repeat: Infinity, delay } : { duration: 0.15 }}
-      style={active ? { background: folder.color || "#111", color: "#fff" } : {}}
+      transition={
+        bounce ? { duration: 1.2, repeat: Infinity, delay } : { duration: 0.15 }
+      }
+      style={
+        active ? { background: folder.color || "#111", color: "#fff" } : {}
+      }
     >
       <strong>{folder.stickerText || folder.title}</strong>
       {folder.year ? <span className="pill-year">{folder.year}</span> : null}
@@ -193,26 +213,55 @@ function MediaMasonry({ work }) {
     ? work.media
         .map((m) => {
           if (m?.videoUrl) {
-            return { key: m._key, kind: "video", src: m.videoUrl, poster: m.posterUrl };
+            return {
+              key: m._key,
+              kind: "video",
+              src: m.videoUrl,
+              poster: m.posterUrl,
+            };
           }
           if (m?.imageUrl) {
-            return { key: m._key, kind: "image", src: m.imageUrl, alt: m.alt || work.title || "" };
+            return {
+              key: m._key,
+              kind: "image",
+              src: m.imageUrl,
+              alt: m.alt || work.title || "",
+            };
           }
           return null;
         })
         .filter(Boolean)
     : work.coverImageUrl
-    ? [{ key: "cover", kind: "image", src: work.coverImageUrl, alt: work.title || "" }]
-    : [];
+      ? [
+          {
+            key: "cover",
+            kind: "image",
+            src: work.coverImageUrl,
+            alt: work.title || "",
+          },
+        ]
+      : [];
 
   return (
     <div className="masonry">
       {items.map((it) => (
         <figure key={it.key} className="masonry-item">
           {it.kind === "image" ? (
-            <img className="masonry-media" src={it.src} alt={it.alt || ""} loading="lazy" />
+            <img
+              className="masonry-media"
+              src={it.src}
+              alt={it.alt || ""}
+              loading="lazy"
+            />
           ) : (
-            <video className="masonry-media" src={it.src} poster={it.poster} controls playsInline preload="metadata" />
+            <video
+              className="masonry-media"
+              src={it.src}
+              poster={it.poster}
+              controls
+              playsInline
+              preload="metadata"
+            />
           )}
         </figure>
       ))}

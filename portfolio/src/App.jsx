@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Header from "./sections/Header";
 import Hero from "./sections/Hero";
-import About from "./sections/About";
-
 import Projects from "./sections/Projects";
 
 function App() {
@@ -15,7 +13,6 @@ function App() {
       <main className="relative z-20">
         <Header isDark={isDark} setIsDark={setIsDark} />
         <Hero />
-        <About />
         <Projects />
       </main>
     </div>
