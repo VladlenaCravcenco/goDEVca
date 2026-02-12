@@ -1,0 +1,56 @@
+.siteHeader{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 14px 0;
+}
+
+.siteHeader__inner{
+  width: min(1300px, 92vw);
+  margin: 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+
+  border-radius: 18px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(0,0,0,0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.siteHeader__logo{
+  text-decoration:none;
+  color: rgba(0,0,0,0.9);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.siteHeader__actions{
+  display:flex;
+  gap: 10px;
+}
+
+.siteHeader__btn{
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  font-size: 13px;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.siteHeader__btn--ghost{
+  background: rgba(255,255,255,0.45);
+  color: rgba(0,0,0,0.9);
+  border: 1px solid rgba(0,0,0,0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

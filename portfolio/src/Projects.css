@@ -1,55 +1,69 @@
 .dp-page{
   width: 100%;
-  padding: 48px 0 120px;
+  padding: 60px 0 140px;
+  position: relative;
+  z-index: 2;
 }
+
+/* ===== Верхняя часть ===== */
 
 .dp-top{
   display:flex;
   justify-content:center;
-  margin-bottom: 36px;
+  margin-bottom: 48px;
 }
 
+/* Фильтры — без стекла */
 .dp-filters{
   display:flex;
   gap: 10px;
-  padding: 10px;
+  padding: 8px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
 }
 
 .dp-pill{
   border: 0;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(0,0,0,0.06);
+  background: transparent;
   cursor: pointer;
   font-weight: 600;
+  transition: background .2s ease, color .2s ease;
 }
+
+.dp-pill:hover{
+  background: rgba(0,0,0,0.05);
+}
+
 .dp-pill.is-active{
-  background: rgba(0,0,0,0.75);
+  background: #111;
   color: white;
 }
+
+/* ===== Список проектов ===== */
 
 .dp-list{
   width: min(1200px, 92vw);
   margin: 0 auto;
   display:flex;
   flex-direction:column;
-  gap: 90px;
+  gap: 100px;
 }
 
 .dp-project{
   width: 100%;
 }
 
+/* ===== Header проекта ===== */
+
 .dp-header{
   display:grid;
-  grid-template-columns: 1fr 340px;
-  gap: 28px;
-  align-items: start;
-  margin-bottom: 26px;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items:start;
+  margin-bottom: 32px;
 }
 
 @media (max-width: 900px){
@@ -60,20 +74,21 @@
 
 .dp-miniTag{
   display:inline-flex;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(0,0,0,0.06);
+  background: rgba(0,0,0,0.05);
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dp-title{
   font-size: 56px;
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.04em;
   margin: 0;
 }
+
 @media (max-width: 900px){
   .dp-title{ font-size: 40px; }
 }
@@ -81,29 +96,30 @@
 .dp-titleMeta{
   font-size: 16px;
   font-weight: 700;
-  opacity: 0.6;
+  opacity: 0.5;
   margin-left: 10px;
 }
 
 .dp-desc{
-  margin: 10px 0 0;
+  margin: 14px 0 0;
   opacity: 0.75;
-  max-width: 52ch;
+  max-width: 56ch;
 }
+
+/* ===== Коллаб блок ===== */
 
 .dp-collab{
   display:flex;
-  gap: 12px;
+  gap: 14px;
   justify-content:flex-end;
   align-items:flex-start;
-  text-align:left;
 }
 
 .dp-collabLogo{
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .dp-collabTitle{
@@ -116,39 +132,42 @@
 .dp-collabSub{
   margin: 6px 0 0;
   font-size: 12px;
-  opacity: 0.75;
+  opacity: 0.6;
 }
 
-/* СЕТКА */
+/* ===== Сетка ===== */
+
 .dp-grid{
   display:grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
-/* Ячейка */
+/* Ячейка — без стекла */
 .dp-cell{
   margin: 0;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow:hidden;
-  background: rgba(0,0,0,0.06);
-  box-shadow: 0 14px 36px rgba(0,0,0,0.06);
+  background: #f3f3f3;
   position: relative;
 }
 
-/* Дефолт: если не задашь rowSpan/colSpan — будет “4:3” визуально
-   за счёт aspect-ratio у медиа */
+/* дефолт 4:3 */
+.dp-cell.is-default{
+  aspect-ratio: 4 / 3;
+}
+
 .dp-media{
   width: 100%;
   height: 100%;
   display:block;
-  object-fit: cover; /* вот это то, что ты просила: заполняет пространство */
+  object-fit: cover;
 }
 
-/* Если сетка начинает быть слишком “высокой” на мобилке — сделаем проще */
+/* Мобилка */
 @media (max-width: 700px){
   .dp-grid{
     grid-template-columns: repeat(6, 1fr);
-    gap: 14px;
+    gap: 16px;
   }
 }

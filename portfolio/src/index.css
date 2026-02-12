@@ -32,6 +32,12 @@
     font-style: normal;
   }
 } 
+
+
+#root {
+  position: relative;
+  z-index: 2;
+}
 html, body{
   width: 100%;
   overflow-x: hidden;

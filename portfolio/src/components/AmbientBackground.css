@@ -1,0 +1,23 @@
+/* круги */
+.ambient__canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* стекло между кругами и контентом */
+.ambient__glass {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+
+  /* лёгкая вуаль, но не грязь */
+  background: rgba(255, 255, 255, 0.10);
+}
