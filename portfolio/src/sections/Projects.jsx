@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { client } from "./sanityClient";
+import { client } from "../sanityClient";
 import "./Projects.css";
 
 const MotionArticle = motion.article;
