@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import AmbientBackground from "./components/AmbientBackground";
 import SiteHeader from "./components/SiteHeader";
 import Hero from "./sections/Hero";
@@ -18,6 +19,7 @@ function App() {
         <Hero />
         <Projects />
       </main>
+      <Analytics />
     </div>
   );
 }
