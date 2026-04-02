@@ -30,6 +30,36 @@
 .siteHeader__actions{
   display:flex;
   gap: 10px;
+  align-items: center;
+}
+
+.siteHeader__lang{
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  gap: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(0,0,0,0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.siteHeader__langBtn{
+  min-width: 46px;
+  height: 30px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.7);
+}
+
+.siteHeader__langBtn.is-active{
+  background: rgba(0,0,0,0.9);
+  color: #fff;
 }
 
 .siteHeader__btn{
@@ -53,4 +83,17 @@
   border: 1px solid rgba(0,0,0,0.12);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width: 760px){
+  .siteHeader__inner{
+    width: min(1300px, 94vw);
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .siteHeader__actions{
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 }

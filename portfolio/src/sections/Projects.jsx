@@ -5,9 +5,10 @@ import "../Projects.css";
 
 const MotionArticle = motion.article;
 
-export default function ProjectsPage() {
+export default function ProjectsPage({ t }) {
   const [works, setWorks] = useState([]);
   const [activeTag, setActiveTag] = useState("All");
+  const labels = t.projects;
 
   useEffect(() => {
     client
@@ -49,7 +50,7 @@ export default function ProjectsPage() {
   }, [works, activeTag]);
 
   return (
-    <section className="dp-page">
+    <section className="dp-page" id="projects">
       <div className="dp-top">
         <div className="dp-filters">
           {allTags.map((t) => (
@@ -59,7 +60,7 @@ export default function ProjectsPage() {
               onClick={() => setActiveTag(t)}
               type="button"
             >
-              {t}
+              {t === "All" ? labels.all : t}
             </button>
           ))}
         </div>
@@ -76,28 +77,28 @@ export default function ProjectsPage() {
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.25, delay: Math.min(idx * 0.03, 0.2) }}
             >
-              <ProjectHeader work={work} index={idx} />
+              <ProjectHeader work={work} index={idx} labels={labels} />
               <MediaGrid items={work.media || []} />
             </MotionArticle>
           ))}
         </AnimatePresence>
 
         {!filteredWorks.length && (
-          <div className="dp-empty">Пока нет проектов в этой категории.</div>
+          <div className="dp-empty">{labels.empty}</div>
         )}
       </div>
     </section>
   );
 }
 
-function ProjectHeader({ work, index }) {
+function ProjectHeader({ work, index, labels }) {
   return (
     <header className="dp-header">
       <div className="dp-left">
-        <span className="dp-miniTag">{work.tags?.[0] || "Project"}</span>
+        <span className="dp-miniTag">{work.tags?.[0] || labels.projectFallback}</span>
 
         <h2 className="dp-title">
-          {work.title || `Название проекта #${index + 1}`}
+          {work.title || `${labels.projectTitleFallback} #${index + 1}`}
           <span className="dp-titleMeta">{work.year ? `/${work.year}` : "/—"}</span>
         </h2>
 
@@ -111,7 +112,7 @@ function ProjectHeader({ work, index }) {
               <img
                 className="dp-collabLogo"
                 src={work.collab.companyLogoUrl}
-                alt={work.collab.label || "Company logo"}
+                alt={work.collab.label || labels.companyLogoAlt}
                 loading="lazy"
               />
             ) : null}

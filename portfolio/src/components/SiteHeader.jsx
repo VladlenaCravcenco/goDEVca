@@ -1,49 +1,43 @@
-import { useEffect, useState } from "react";
-import ContactModal from "./ContactModal";
+import { LANGUAGES } from "../i18n";
 import "./SiteHeader.css";
 
-export default function SiteHeader() {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
+export default function SiteHeader({ lang, onChangeLanguage, onOpenContact, t }) {
   return (
-    <>
-      <header className="siteHeader">
-        <div className="siteHeader__inner">
-          <a className="siteHeader__logo" href="/" aria-label="goDEVca">
-            goDEVca
+    <header className="siteHeader">
+      <div className="siteHeader__inner">
+        <a className="siteHeader__logo" href={`/${lang}`} aria-label="goDEVca">
+          goDEVca
+        </a>
+
+        <div className="siteHeader__actions">
+          <div className="siteHeader__lang" aria-label={t.languageLabel}>
+            {LANGUAGES.map((language) => (
+              <button
+                key={language}
+                className={`siteHeader__langBtn ${lang === language ? "is-active" : ""}`}
+                type="button"
+                onClick={() => onChangeLanguage(language)}
+                aria-pressed={lang === language}
+              >
+                {language.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          <a
+            className="siteHeader__btn siteHeader__btn--ghost"
+            href="https://godevca.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t.siteHeader.websites}
           </a>
 
-          <div className="siteHeader__actions">
-            {/* Ссылка на сайт про сайты (вставь свой URL) */}
-            <a
-              className="siteHeader__btn siteHeader__btn--ghost"
-              href="https://godevca.com" // <-- поменяй на нужный
-              target="_blank"
-              rel="noreferrer"
-            >
-              К сайтам
-            </a>
-
-            <button
-              className="siteHeader__btn"
-              type="button"
-              onClick={() => setOpen(true)}
-            >
-              Контакт
-            </button>
-          </div>
+          <button className="siteHeader__btn" type="button" onClick={onOpenContact}>
+            {t.siteHeader.contact}
+          </button>
         </div>
-      </header>
-
-      <ContactModal open={open} onClose={() => setOpen(false)} />
-    </>
+      </div>
+    </header>
   );
 }

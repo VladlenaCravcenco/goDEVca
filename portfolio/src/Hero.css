@@ -164,6 +164,8 @@
   height: 44px;
   padding: 0 16px;
   border-radius: 14px;
+  border: 0;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -240,4 +242,5 @@
   .hero__blocks { grid-template-columns: 1fr; }
   .hero__name { font-size: 54px; }
   .hero__surname { font-size: 44px; }
+  .hero__ctaRow { flex-wrap: wrap; }
 }

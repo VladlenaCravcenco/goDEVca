@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
 import "./ContactModal.css";
 
-export default function ContactModal({ open, onClose }) {
+export default function ContactModal({ open, onClose, t }) {
   const [status, setStatus] = useState("idle"); // idle | sending | ok | error
   const [errorText, setErrorText] = useState("");
 
@@ -14,6 +14,24 @@ export default function ContactModal({ open, onClose }) {
   const canSend = useMemo(() => {
     return Boolean(serviceId && templateId && publicKey);
   }, [serviceId, templateId, publicKey]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) {
+      setStatus("idle");
+      setErrorText("");
+    }
+  }, [open]);
 
   if (!open) return null;
 
@@ -38,13 +56,13 @@ export default function ContactModal({ open, onClose }) {
 
     if (!name || !phone || !message) {
       setStatus("error");
-      setErrorText("Заполни: имя, телефон и задачу.");
+      setErrorText(t.errorRequired);
       return;
     }
 
     if (!canSend) {
       setStatus("error");
-      setErrorText("EmailJS не настроен: проверь переменные VITE_EMAILJS_* в .env");
+      setErrorText(t.errorEmail);
       return;
     }
 
@@ -60,7 +78,7 @@ export default function ContactModal({ open, onClose }) {
           from_phone: phone,
           reply_to: email || "",
           message: message,
-          source: "goDEVca • дизайн-портфолио",
+          source: t.source,
         },
         { publicKey }
       );
@@ -69,7 +87,7 @@ export default function ContactModal({ open, onClose }) {
       e.currentTarget.reset();
     } catch {
       setStatus("error");
-      setErrorText("Не отправилось. Попробуй ещё раз или напиши в Instagram.");
+      setErrorText(t.errorSubmit);
     }
   };
 
@@ -77,8 +95,8 @@ export default function ContactModal({ open, onClose }) {
     <div className="modal" onMouseDown={onBackdrop} role="dialog" aria-modal="true">
       <div className="modal__panel">
         <div className="modal__top">
-          <div className="modal__title">Заявка</div>
-          <button className="modal__close" type="button" onClick={onClose} aria-label="Закрыть">
+          <div className="modal__title">{t.title}</div>
+          <button className="modal__close" type="button" onClick={onClose} aria-label={t.close}>
             ✕
           </button>
         </div>
@@ -88,49 +106,43 @@ export default function ContactModal({ open, onClose }) {
           <input className="hp" name="company" tabIndex={-1} autoComplete="off" />
 
           <label className="field">
-            <span className="field__label">Имя *</span>
-            <input className="field__input" name="name" placeholder="Как к вам обращаться" />
+            <span className="field__label">{t.name}</span>
+            <input className="field__input" name="name" placeholder={t.namePlaceholder} />
           </label>
 
           <label className="field">
-            <span className="field__label">Телефон / Telegram *</span>
-            <input className="field__input" name="phone" placeholder="+373… или @username" />
+            <span className="field__label">{t.phone}</span>
+            <input className="field__input" name="phone" placeholder={t.phonePlaceholder} />
           </label>
 
           <label className="field">
-            <span className="field__label">Email (необязательно)</span>
-            <input className="field__input" name="email" placeholder="you@mail.com" />
+            <span className="field__label">{t.email}</span>
+            <input className="field__input" name="email" placeholder={t.emailPlaceholder} />
           </label>
 
           <label className="field">
-            <span className="field__label">Задача *</span>
+            <span className="field__label">{t.message}</span>
             <textarea
               className="field__textarea"
               name="message"
-              placeholder="Что нужно сделать? Сроки? Пример/референс?"
+              placeholder={t.messagePlaceholder}
               rows={5}
             />
           </label>
 
           {status === "error" && <div className="modal__error">{errorText}</div>}
-          {status === "ok" && <div className="modal__ok">Отправлено ✅ Я отвечу в ближайшее время.</div>}
+          {status === "ok" && <div className="modal__ok">{t.success}</div>}
 
           <div className="modal__actions">
-            <button
-              className="modal__btn modal__btn--ghost"
-              type="button"
-              onClick={onClose}
-            >
-              Отмена
+            <button className="modal__btn modal__btn--ghost" type="button" onClick={onClose}>
+              {t.cancel}
             </button>
             <button className="modal__btn" type="submit" disabled={status === "sending"}>
-              {status === "sending" ? "Отправляю…" : "Отправить"}
+              {status === "sending" ? t.sending : t.submit}
             </button>
           </div>
 
-          <div className="modal__note">
-            Нажми <b>Esc</b> чтобы закрыть.
-          </div>
+          <div className="modal__note">{t.note}</div>
         </form>
       </div>
     </div>
