@@ -1,6 +1,6 @@
 import "../Hero.css";
 
-const PHOTO_SRC = "/me.jpg";
+const PHOTO_SRC = "/me.JPG";
 
 export default function Hero({ t, onOpenContact }) {
   const { hero } = t;
