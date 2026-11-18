@@ -6,7 +6,8 @@ export default function SiteHeader({ lang, onChangeLanguage, onOpenContact, t })
     <header className="siteHeader">
       <div className="siteHeader__inner">
         <a className="siteHeader__logo" href={`/${lang}`} aria-label="goDEVca">
-          goDEVca
+          <img src={`${import.meta.env.BASE_URL}godevca-mark.svg`} width="36" height="36" alt="" />
+          <span>goDEVca</span>
         </a>
 
         <div className="siteHeader__actions">

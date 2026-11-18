@@ -1,6 +1,5 @@
 import "../Hero.css";
-
-const PHOTO_SRC = "/me.JPG";
+import portrait from "../assets/vladlena-portrait.jpg";
 
 export default function Hero({ t, onOpenContact }) {
   const { hero } = t;
@@ -10,7 +9,7 @@ export default function Hero({ t, onOpenContact }) {
       <div className="hero__container">
         <div className="hero__grid">
           <div className="hero__photoWrap">
-            <img className="hero__photo" src={PHOTO_SRC} alt={hero.photoAlt} />
+            <img className="hero__photo" src={portrait} alt={hero.photoAlt} width="933" height="1400" fetchPriority="high" />
             <div className="hero__photoShadow" aria-hidden="true" />
           </div>
 
