@@ -21,19 +21,11 @@
 }
 
 .siteHeader__logo{
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
   flex-shrink: 0;
   text-decoration:none;
   color: rgba(0,0,0,0.9);
   font-weight: 800;
   letter-spacing: -0.02em;
-}
-
-.siteHeader__logo img{
-  display: block;
-  flex-shrink: 0;
 }
 
 .siteHeader__actions{
